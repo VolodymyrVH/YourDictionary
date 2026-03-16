@@ -11,7 +11,7 @@ class Word(Base):
     language_id: Mapped[int] = mapped_column(ForeignKey("languages.id"), nullable=False)
     part_language_id: Mapped[int] = mapped_column(ForeignKey("parts_language.id"), nullable=False)
     category_id: Mapped[int | None] = mapped_column(ForeignKey("categories.id"), nullable=True)
-    transcription: Mapped[str] = mapped_column(String(100))
+    transcription: Mapped[str] = mapped_column(String(100), nullable=True)
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
 
     __table_args__ = (

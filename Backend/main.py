@@ -8,7 +8,7 @@ from core.database import init_db
 
 from models.users import *
 
-from api import users
+from api import users, auth
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -26,6 +26,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+app.include_router(auth.router)
 app.include_router(users.router)
 
 

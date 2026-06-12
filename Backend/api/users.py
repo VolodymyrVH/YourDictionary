@@ -23,7 +23,7 @@ def get_by_email(email: str, db: Session = Depends(get_db)):
     return user_db
 
 
-@router.get("/id/{id}", response_model=UserResponseSchema)
+@router.get("/id/{user_id}", response_model=UserResponseSchema)
 def get_by_id(user_id: int, db: Session = Depends(get_db)):
     user_db = db.query(User).filter(User.id == user_id).first()
     if not user_db:
@@ -44,7 +44,8 @@ def create_user(user: UserCreateSchema, db: Session = Depends(get_db)):
         raise HTTPException(status_code=400, detail="Email already registered")
     
     user_db = User(**user.model_dump(exclude={"password"}),
-                   hashed_password = get_password_hash(user.hashed_password),)
+                   password=get_password_hash(user.password),
+    )
 
     db.add(user_db)
     db.commit()

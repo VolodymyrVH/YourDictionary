@@ -12,7 +12,7 @@ from core.database import get_db
 from models.users import User
 
 SECRET_KEY = "123"
-ALGHORITHM = "HS256"
+ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
 router = APIRouter(prefix="/auth", tags=["auth"])
@@ -38,7 +38,7 @@ def get_by_email(email: str, db: Session):
     return user_db
 
 
-def verefy_password(plain_password, hashed_password):
+def verify_password(plain_password, hashed_password):
     return password_hash.verify(plain_password, hashed_password)
 
 
@@ -52,7 +52,7 @@ def authenticate_user(db: Session, email: str, password: str):
     if not user:
         return None
     
-    if not verefy_password(password, user.password):
+    if not verify_password(password, user.password):
         return None
         
     return user
@@ -67,7 +67,7 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None):
         expire = datetime.now(timezone.utc) + timedelta(minutes=15)
 
     to_encode.update({"exp": expire})
-    encode_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGHORITHM)
+    encode_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
 
     return encode_jwt
 
@@ -76,7 +76,7 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)], db: Se
     credentials_exception = HTTPException(status_code=401, detail="Could not validate credentials")
 
     try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGHORITHM])
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         email = payload.get("sub")
 
         if email is None:

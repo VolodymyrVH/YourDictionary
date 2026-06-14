@@ -40,3 +40,27 @@ body {
     font-size: clamp(1rem, 2vw, 1.8rem);
     margin: 0;
 }
+
+.footer {
+  background-color: #222;
+  color: white;
+  padding: 20px;
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer a {
+  color: white;
+  text-decoration: none;
+  margin-left: 15px;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}

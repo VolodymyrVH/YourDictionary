@@ -7,6 +7,7 @@ from contextlib import asynccontextmanager
 from core.database import init_db
 
 from models.users import *
+from models.categories import *
 
 from api import users, auth
 

@@ -178,3 +178,139 @@ body {
 .login-button:hover {
   background: radial-gradient(circle,rgba(36, 138, 247, 0.8) 0%, rgba(36, 138, 247, 0.4) 60%, rgba(36, 138, 247, 0) 100%);
 }
+
+.dictionary-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  background: white;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+.all-translation-contaiber {
+  padding: 50px 20px;
+  padding-bottom: 150px;
+  text-align: center;
+  background: #f8faff;
+}
+
+.upper-explanation {
+  font-size: 1.4rem;
+  color: black;
+  margin-bottom: 15px;
+}
+
+.form-dictionary {
+  display: flex;
+  max-width: 1200px;
+  margin: 0 auto;
+  background: #ffffff;
+  padding: 30px;
+  padding-top: 0;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.word-input {
+  display: grid;
+  grid-template-columns: 100px 1fr 150px 150px;
+  gap: 12px;
+}
+
+.word-input select,
+.word-input input,
+.explanation-word-input textarea {
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 16px;
+  transition: all 0.2s ease;
+}
+
+.word-input select:focus,
+.word-input input:focus,
+.explanation-word-input textarea:focus {
+  outline: none;
+  border-color: rgb(36, 138, 247);
+}
+
+.explanation-word-input textarea {
+  width: 100%;
+  min-height: 120px;
+  resize: vertical;
+}
+
+.form-dictionary button {
+  align-self: flex-end;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  background: rgb(36, 138, 247);
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.form-dictionary button:hover {
+  background: rgb(94, 166, 243);
+}
+
+.form-dictionary button:active {
+  transform: translateY(0);
+}
+
+::placeholder {
+  color: #9ca3af;
+}
+
+textarea {
+  box-sizing: border-box;
+}
+
+.field-word-container {
+  margin-top: 30px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.word-item {
+  background: #f8faff;
+  border-radius: 12px;
+  padding: 15px 20px;
+  cursor: pointer;
+  overflow: hidden;
+  transition: 0.3s ease;
+  border: 1px solid #e5e7eb;
+}
+
+.word-main {
+  font-size: 22px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.word-hover-info {
+  max-height: 0;
+  opacity: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  color: #6b7280;
+  font-size: 15px;
+  transition: 0.35s ease;
+}
+
+.word-item:hover {
+  background: white;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+.word-item:hover .word-hover-info {
+  max-height: 150px;
+  opacity: 1;
+  margin-top: 12px;
+}

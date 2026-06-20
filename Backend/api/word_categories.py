@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.orm import Session
-from schemas.categories import CategoryCreateSchema, CategoryResponseSchema, CategoryUpdateSchema, WordCategoryCreateSchema, WordCategoryResponseSchema
+from schemas.categories import WordCategoryCreateSchema, WordCategoryResponseSchema
 from models.categories import Category, WordCategory
 from models.users import User
 from core.database import get_db

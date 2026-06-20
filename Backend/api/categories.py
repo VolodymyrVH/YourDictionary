@@ -74,8 +74,3 @@ def delete_category(category_id: int, current_user: User = Depends(get_current_u
 
     db.delete(category_db)
     db.commit()
-
-
-#def get_word_category
-#def create_word_category
-#def delete_word_category

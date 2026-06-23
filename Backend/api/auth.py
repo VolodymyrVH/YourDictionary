@@ -10,6 +10,7 @@ from pydantic import BaseModel
 
 from core.database import get_db
 from models.users import User
+from schemas.users import UserLoginSchema
 
 SECRET_KEY = "123"
 ALGORITHM = "HS256"
@@ -96,8 +97,12 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)], db: Se
 
 
 @router.post("/token", response_model=Token)
-async def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()], db: Session = Depends(get_db)) -> Token:
-    user = authenticate_user(db, form_data.username, form_data.password)
+async def login(data: UserLoginSchema, db: Session = Depends(get_db)) -> Token:
+    user = authenticate_user(
+        db,
+        data.email,
+        data.password
+    )
     if not user:
         raise HTTPException(status_code=401, detail="Incorrect email or password")
     

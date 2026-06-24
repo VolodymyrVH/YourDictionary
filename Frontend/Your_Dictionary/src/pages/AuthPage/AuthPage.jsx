@@ -1,23 +1,42 @@
-import React from "react"
+import React, { useState } from "react";
+import { useLocation } from "react-router-dom";
 
-import RegitstrationForm from "./components/RegistrationForm"
-import LoginForm from "./components/LoginForm"
+import RegistrationForm from "./components/RegistrationForm";
+import LoginForm from "./components/LoginForm";
+
+import "./components/AuthPage.css";
 
 export default function AuthPage() {
-    return(
-        <>
-            <div className="background">
-                <label class="switch">
-                    <input type="checkbox" />
-                    <span className="slider-switch-reg-to-log"></span>
-                </label>
-                <div className="reg-form">
-                    <RegitstrationForm />
+    const location = useLocation();
+
+    const [isLogin, setIsLogin] = useState(
+        location.state?.isLogin ?? false
+    );
+
+    return (
+        <div className="background">
+            <div className="auth-card">
+                <div className="auth-tabs">
+                    <button
+                        className={!isLogin ? "tab active" : "tab"}
+                        onClick={() => setIsLogin(false)}
+                    >
+                        Registration
+                    </button>
+                    <button
+                        className={isLogin ? "tab active" : "tab"}
+                        onClick={() => setIsLogin(true)}
+                    >
+                        Login
+                    </button>
+                    <div
+                        className={`tab-slider ${isLogin ? "right" : "left"}`}
+                    />
                 </div>
-                <div className="log-form">
-                    <LoginForm />
+                <div className="auth-content">
+                    {isLogin ? (<LoginForm />) : (<RegistrationForm />)}
                 </div>
             </div>
-        </>
-    )
+        </div>
+    );
 }

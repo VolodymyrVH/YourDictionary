@@ -1,3 +1,15 @@
+.nunito-uniquifier {
+  font-family: "Nunito", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: weight;
+  font-style: normal;
+}
+
+body {
+  margin: 0;
+  font-family: "Nunito";
+}
+
 .header_container {
   display: flex;
   flex-direction: column;

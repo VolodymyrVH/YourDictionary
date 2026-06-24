@@ -22,25 +22,23 @@ export default function LoginForm() {
     }
 
     return(
-        <>
+        <div className="login-container">
             <h1>Login</h1>
-            <form onSubmit={handleSubmit}>
-                <label>E-Mail</label><br />
+            <form className="log-form" onSubmit={handleSubmit}>
+                <label>E-Mail</label>
                 <input 
                     type="email" 
                     value={userlog.email}
                     onChange={(e) => setUserlog({...userlog, email: e.target.value})}
                 />
-                <br />
-                <label>Password</label><br />
+                <label>Password</label>
                 <input 
                     type="password" 
                     value={userlog.password}
                     onChange={(e) => setUserlog({...userlog, password: e.target.value})}    
                 />
-                <br />
-                <input type="submit"/>
+                <button type="submit">Login</button>
             </form>
-        </>
+        </div>
     )
 }

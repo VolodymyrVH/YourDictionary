@@ -12,3 +12,4 @@ class User(Base):
     created_at = Column(TIMESTAMP, server_default=func.now())
 
     categories = relationship("Category", back_populates="user", cascade="all, delete-orphan")
+    words = relationship("Word", back_populates="user", cascade="all, delete-orphan")

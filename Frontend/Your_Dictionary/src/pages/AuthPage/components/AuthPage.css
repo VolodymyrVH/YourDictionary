@@ -144,3 +144,8 @@
 .log-form button:active {
   transform: translateY(1px);
 }
+
+.empty {
+  border: 2px solid red;
+  background-color: #ffe5e5;
+}

@@ -7,8 +7,16 @@ export default function LoginForm() {
         password: ""
     })
 
+    const [isSubmitted, setIsSubmitted] = useState(false);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        setIsSubmitted(true);
+
+        if (userlog.email === "" || userlog.password === "") {
+            return;
+        }
 
         const response = await axios.post(
             "http://127.0.0.1:8000/auth/token/",
@@ -17,8 +25,6 @@ export default function LoginForm() {
                 password: userlog.password
             }
         );
-
-        console.log(response.data);
     }
 
     return(
@@ -28,12 +34,14 @@ export default function LoginForm() {
                 <label>E-Mail</label>
                 <input 
                     type="email" 
+                    className={isSubmitted && userlog.email === "" ? "empty" : ""}
                     value={userlog.email}
                     onChange={(e) => setUserlog({...userlog, email: e.target.value})}
                 />
                 <label>Password</label>
                 <input 
                     type="password" 
+                    className={isSubmitted && userlog.password === "" ? "empty" : ""}
                     value={userlog.password}
                     onChange={(e) => setUserlog({...userlog, password: e.target.value})}    
                 />

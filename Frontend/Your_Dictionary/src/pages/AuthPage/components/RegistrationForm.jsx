@@ -9,11 +9,18 @@ export default function RegitstrationForm() {
         checkpassowrd: ""
     })
 
+    const [isSubmitted, setIsSubmitted] = useState(false);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        setIsSubmitted(true);
+
+        if (userreg.email === "" || userreg.password === "") {
+            return;
+        }
+
         if (userreg.password != userreg.checkpassowrd) {
-            console.log("wrong second password");
             return;
         }
 
@@ -24,8 +31,6 @@ export default function RegitstrationForm() {
                 password: userreg.password
             }
         );
-
-        console.log(response.data);
     }
 
     return (
@@ -35,18 +40,21 @@ export default function RegitstrationForm() {
             <label>E-Mail</label>
             <input
                 type="email"
+                className={isSubmitted && userreg.email === "" ? "empty" : ""}
                 value={userreg.email}
                 onChange={(e) => setUserreg({ ...userreg, email: e.target.value })}
             />
             <label>Password</label>
             <input
                 type="password"
+                className={isSubmitted && userreg.password === "" ? "empty" : ""}
                 value={userreg.password}
                 onChange={(e) => setUserreg({ ...userreg, password: e.target.value })}
             />
             <label>Repeat Password</label>
             <input
                 type="password"
+                className={(isSubmitted && userreg.checkpassowrd === "") || (isSubmitted && userreg.checkpassowrd !== userreg.password) ? "empty" : ""}
                 value={userreg.checkpassowrd}
                 onChange={(e) => setUserreg({ ...userreg, checkpassowrd: e.target.value })}
             />

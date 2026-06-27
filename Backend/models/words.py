@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String, ForeignKey, TIMESTAMP, func
-from sqlalchemy.orm import mapped_column, relationship
+from sqlalchemy.orm import relationship
 
 from core.database import Base
 
@@ -18,7 +18,8 @@ class Word(Base):
     language_id = Column(Integer, nullable=True) #add after creating tables
     article_id = Column(Integer, nullable=True) #add after creating tables
     parts_of_speach_id = Column(Integer, nullable=True) #add after creating tables
-    gender_id = Column(Integer, nullable=True) #add after creating tables
+    gender_id = Column(Integer, ForeignKey("genders.id"), nullable=True)
 
     user = relationship("User", back_populates="words")
+    gender = relationship("Gender", back_populates="words")
     word_categories = relationship("WordCategory", back_populates="word", cascade="all, delete-orphan")

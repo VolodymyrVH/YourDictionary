@@ -8,8 +8,9 @@ from core.database import init_db
 
 from models.users import *
 from models.categories import *
+from models.words import *
 
-from api import users, auth, categories, word_categories
+from api import users, auth, categories, word_categories, words
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -31,6 +32,7 @@ app.include_router(auth.router)
 app.include_router(users.router)
 app.include_router(categories.router)
 app.include_router(word_categories.router)
+app.include_router(words.router)
 
 
 @app.get("/")

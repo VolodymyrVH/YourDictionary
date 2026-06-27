@@ -22,7 +22,8 @@ class WordCategory(Base):
 
     id = Column(Integer, primary_key=True)
     
-    word_id = Column(Integer, nullable=True) #chagne to foreign key after adding table Words
+    word_id = mapped_column(ForeignKey("words.id"), nullable=False)
     category_id  = mapped_column(ForeignKey("categories.id"), nullable=False)
 
-    category = relationship("Category", back_populates="word_categories")
+    category = relationship("Category", back_populates="word_categories")   
+    word = relationship("Word", back_populates="word_categories")

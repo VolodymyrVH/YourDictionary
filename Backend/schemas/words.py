@@ -4,9 +4,9 @@ from pydantic import BaseModel, Field, ConfigDict
 #change after adding new tables
 class WordCreateSchema(BaseModel):
     word_string: str = Field(min_length=1)
-    language_id: int | None = Field(None, gt=0)
+    language_id: int = Field(gt=0)
     article_id: int | None = Field(None, gt=0)
-    parts_of_speech_id: int | None = Field(None, gt=0)
+    part_of_speech_id: int | None = Field(None, gt=0)
     transcription: str | None = Field(None, min_length=1)
     gender_id: int | None = Field(None, gt=0)
     definition: str | None = Field(None, min_length=1)

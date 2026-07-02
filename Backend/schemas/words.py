@@ -1,7 +1,7 @@
 from datetime import datetime
 from pydantic import BaseModel, Field, ConfigDict
 
-#change after adding new tables
+
 class WordCreateSchema(BaseModel):
     word_string: str = Field(min_length=1)
     language_id: int = Field(gt=0)

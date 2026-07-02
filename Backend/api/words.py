@@ -24,6 +24,26 @@ def get_word(word: str, current_user: User = Depends(get_current_user), db: Sess
     return word_db
 
 
+@router.get("/filtered_words", response_model=list[WordResponseSchema])
+def get_filtered_words(skip: int = 0, 
+                       limit = 100,
+                       language_id: int | None = None,
+                       part_of_speech_id: int | None = None,
+                       gender_id: int | None = None, 
+                       current_user: User = Depends(get_current_user), 
+                       db: Session = Depends(get_db)):
+    query = db.query(Word).filter(Word.user_id == current_user.id)
+
+    if language_id:
+        query = query.filter(Word.language_id == language_id)
+    if part_of_speech_id:
+        query = query.filter(Word.part_of_speech_id == part_of_speech_id)
+    if gender_id:
+        query = query.filter(Word.gender_id == gender_id)
+    
+    return (query.order_by(Word.id).offset(skip).limit(limit).all())
+
+
 @router.post("/word", response_model=WordResponseSchema)
 def create_word(word: WordCreateSchema, current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     word_db = Word(
@@ -31,7 +51,7 @@ def create_word(word: WordCreateSchema, current_user: User = Depends(get_current
         word_string=word.word_string,
         language_id=word.language_id,
         article_id=word.article_id,
-        parts_of_speach_id=word.parts_of_speach_id,
+        part_of_speach_id=word.part_of_speach_id,
         transcription=word.transcription,
         gender_id=word.gender_id,
         definition=word.definition

@@ -10,4 +10,5 @@ class Gender(Base):
     id = Column(Integer, primary_key=True)
     gender = Column(String(50), nullable=False)
 
+    articles = relationship("Article", back_populates="gender")
     words = relationship("Word", back_populates="gender")

@@ -13,6 +13,7 @@ from models.genders import *
 from models.parts_of_speech import *
 from models.articles import *
 from models.languages import *
+from models.translations import *
 
 from api import users, auth, categories, word_categories, words, genders, parts_of_speech, languages, articles
 

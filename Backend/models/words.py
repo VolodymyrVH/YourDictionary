@@ -21,8 +21,13 @@ class Word(Base):
     gender_id = Column(Integer, ForeignKey("genders.id"), nullable=True)
 
     user = relationship("User", back_populates="words")
+
     language = relationship("Language", back_populates="words")
     article = relationship("Article", back_populates="words")
     gender = relationship("Gender", back_populates="words")
     part_of_speech = relationship("PartOfSpeech", back_populates="words")
+    
     word_categories = relationship("WordCategory", back_populates="word", cascade="all, delete-orphan")
+    
+    translations_from = relationship("Translation", foreign_keys="Translation.word_id", back_populates="word_origin", cascade="all, delete-orphan")
+    translations_to = relationship("Translation", foreign_keys="Translation.translated_word_id", back_populates="word_translated", cascade="all, delete-orphan")

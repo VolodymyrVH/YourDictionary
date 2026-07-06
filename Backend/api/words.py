@@ -1,8 +1,12 @@
 from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.orm import Session
 from schemas.words import WordCreateSchema, WordResponseSchema, WordUpdateSchema
+from schemas.categories import CategoryResponseSchema
+from schemas.translations import TranslationResponseSchema
 from models.words import Word
 from models.users import User
+from models.translations import Translation
+from models.categories import WordCategory, Category
 from core.database import get_db
 from api.auth import get_current_user
 
@@ -17,11 +21,29 @@ def get_all_words(skip: int = 0, limit = 100, current_user: User = Depends(get_c
 
 @router.get("/by-name/{word}", response_model=WordResponseSchema)
 def get_word(word: str, current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
-    word_db = (db.query(Word).filter(Word.user_id == current_user.id, Word.word_string == word).first())
+    word_db = (db.query(Word).filter(Word.word_string == word, Word.user_id == current_user.id).first())
     if not word_db:
         raise HTTPException(status_code=404, detail="Word not found")
 
     return word_db
+
+
+@router.get("/{word_id}/categories", response_model=list[CategoryResponseSchema])
+def get_word_categories(word_id: int, current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    categorie_db = db.query(Category).join(WordCategory).filter(WordCategory.word_id == word_id, Category.user_id == current_user.id).all()
+    if not categorie_db:
+        raise HTTPException(status_code=404, detail="Word not found")
+
+    return categorie_db
+
+
+@router.get("/{word_id}/translations", response_model=list[WordResponseSchema])
+def get_word_transaltion(word_id: int, current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    translation_db = (db.query(Word).join(Translation, Translation.translated_word_id == Word.id).filter(Translation.word_id == word_id, Word.user_id == current_user.id).all())
+    if not translation_db:
+        raise HTTPException(status_code=404, detail="Word not found")
+
+    return translation_db
 
 
 @router.get("/filtered_words", response_model=list[WordResponseSchema])

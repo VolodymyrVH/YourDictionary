@@ -15,7 +15,7 @@ from models.articles import *
 from models.languages import *
 from models.translations import *
 
-from api import users, auth, categories, word_categories, words, genders, parts_of_speech, languages, articles
+from api import users, auth, categories, word_categories, words, genders, parts_of_speech, languages, articles, translations
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -42,6 +42,7 @@ app.include_router(genders.router)
 app.include_router(parts_of_speech.router)
 app.include_router(languages.router)
 app.include_router(articles.router)
+app.include_router(translations.router)
 
 
 @app.get("/")

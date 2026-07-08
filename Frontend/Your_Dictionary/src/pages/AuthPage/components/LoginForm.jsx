@@ -19,7 +19,7 @@ export default function LoginForm() {
         }
 
         const response = await axios.post(
-            "http://127.0.0.1:8000/auth/token/",
+            "http://127.0.0.1:8000/auth/token",
             {
                 email: userlog.email,
                 password: userlog.password

@@ -96,39 +96,39 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)], db: Se
     return user
 
 
-#change after creaing all tables and one more integration to front
-@router.post("/token", response_model=Token)
-async def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db), ) -> Token:
-    user = authenticate_user(
-        db,
-        form_data.username,
-        form_data.password,
-    )
-
-    if not user:
-        raise HTTPException(status_code=401, detail="Incorrect email or password")
-
-    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-
-    access_token = create_access_token(
-        data={"sub": user.email},
-        expires_delta=access_token_expires,
-    )
-
-    return Token(access_token=access_token, token_type="bearer",)
-
-
+#use for swagger
 #@router.post("/token", response_model=Token)
-#async def login(data: UserLoginSchema, db: Session = Depends(get_db)) -> Token:
+#async def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db), ) -> Token:
 #    user = authenticate_user(
 #        db,
-#        data.email,
-#        data.password
+#        form_data.username,
+#        form_data.password,
 #    )
+
 #    if not user:
 #        raise HTTPException(status_code=401, detail="Incorrect email or password")
-#    
+#
 #    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-#    access_token = create_access_token(data={"sub": user.email}, expires_delta=access_token_expires)
-#    
-#    return Token(access_token=access_token, token_type="bearer")
+#
+#    access_token = create_access_token(
+#        data={"sub": user.email},
+#        expires_delta=access_token_expires,
+#    )
+
+#   return Token(access_token=access_token, token_type="bearer",)
+
+
+@router.post("/token", response_model=Token)
+async def login(data: UserLoginSchema, db: Session = Depends(get_db)) -> Token:
+    user = authenticate_user(
+        db,
+        data.email,
+        data.password
+    )
+    if not user:
+        raise HTTPException(status_code=401, detail="Incorrect email or password")
+    
+    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token = create_access_token(data={"sub": user.email}, expires_delta=access_token_expires)
+    
+    return Token(access_token=access_token, token_type="bearer")

@@ -1,0 +1,67 @@
+.nunito-uniquifier {
+  font-family: "Nunito", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: weight;
+  font-style: normal;
+}
+
+body {
+  margin: 0;
+  font-family: "Nunito";
+}
+
+.header-wordpage {
+  background: #fff;
+  border-bottom: 1px solid #e8e8e8;
+  padding: 0 32px;
+}
+
+.header-word-game {
+  max-width: 1200px;
+  height: 72px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.logo-blue {
+  background: linear-gradient(180deg,rgb(16, 16, 230) 24%, rgba(89, 169, 255, 1) 100%);
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 10px;
+}
+
+.header-button-word-game-container {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  height: 100%;
+}
+
+.word-button,
+.word-active-button {
+  text-decoration: none;
+  color: #4b5563;
+  padding: 14px 24px;
+  font-weight: 600;
+  transition: 0.2s;
+}
+
+.word-active-button {
+  background: rgb(36, 138, 247);
+  color: #fff;
+  border-radius: 16px 16px 0 0;
+}
+
+.word-button:hover {
+  color: rgb(36, 138, 247);
+}

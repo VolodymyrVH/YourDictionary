@@ -1,8 +1,11 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./AuthPage.css";
 
 export default function RegitstrationForm() {
+    const navigate = useNavigate();
+
     const [userreg, setUserreg] = useState({
         email: "",
         password: "",
@@ -24,13 +27,19 @@ export default function RegitstrationForm() {
             return;
         }
 
-        const response = await axios.post(
-            "http://127.0.0.1:8000/users",
-            {
-                email: userreg.email,
-                password: userreg.password
-            }
-        );
+        try {
+            const response = await axios.post(
+                "http://127.0.0.1:8000/users",
+                {
+                    email: userreg.email,
+                    password: userreg.password
+                }
+            );
+
+            navigate("/wordpage");
+        } catch (error) {
+            console.error("Error registration");
+        }
     }
 
     return (

@@ -1,7 +1,10 @@
 import React, { useState }from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 export default function LoginForm() {
+    const navigate = useNavigate();
+
     const [userlog, setUserlog] = useState({
         email: "",
         password: ""
@@ -18,13 +21,19 @@ export default function LoginForm() {
             return;
         }
 
-        const response = await axios.post(
-            "http://127.0.0.1:8000/auth/token",
-            {
-                email: userlog.email,
-                password: userlog.password
-            }
-        );
+        try {
+            const response = await axios.post(
+                "http://127.0.0.1:8000/auth/token",
+                {
+                    email: userlog.email,
+                    password: userlog.password
+                }
+            );
+            
+            navigate("/wordpage");
+        } catch (error) {
+            console.error("error login");
+        }
     }
 
     return(

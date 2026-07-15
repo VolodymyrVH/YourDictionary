@@ -65,3 +65,86 @@ body {
 .word-button:hover {
   color: rgb(36, 138, 247);
 }
+
+.word-language-container {
+  display: flex;
+  justify-content: center;
+  margin: 15px 0;
+}
+
+.lang-container {
+  display: flex;
+  gap: 8px;
+  padding: 6px;
+  background: #f3f4f6;
+  border-radius: 10px;
+}
+
+.lang-button {
+  border: none;
+  background: transparent;
+  padding: 12px 24px;
+  border-radius: 12px;
+  cursor: pointer;
+  color: #4b5563;
+  font-size: 16px;
+  font-weight: 600;
+  transition: all .25s ease;
+}
+
+.lang-button:hover {
+  background: #ffffff;
+  color: rgb(36, 138, 247);
+}
+
+.lang-button.active {
+  background: rgb(36, 138, 247);
+  color: #fff;
+}
+
+.word-searchbar-container {
+  display: flex;
+  justify-content: center;
+  margin: 40px 0;
+}
+
+.searchbar-wrapper {
+  width: 100%;
+  max-width: 650px;
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border: 2px solid #e5e7eb;
+  border-radius: 18px;
+  padding: 0 18px;
+  transition: all .25s ease;
+}
+
+.searchbar-wrapper:hover {
+  border-color: rgb(36, 138, 247);
+}
+
+.searchbar-wrapper:focus-within {
+  border-color: rgb(36, 138, 247);
+}
+
+.search-icon {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+}
+
+.searchbar {
+  flex: 1;
+  height: 58px;
+  border: none;
+  outline: none;
+  background: transparent;
+  padding-left: 14px;
+  font-size: 17px;
+  color: #1f2937;
+}
+
+.searchbar::placeholder {
+  color: #9ca3af;
+}

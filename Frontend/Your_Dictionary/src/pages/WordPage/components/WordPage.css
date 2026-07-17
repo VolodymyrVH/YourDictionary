@@ -148,3 +148,34 @@ body {
 .searchbar::placeholder {
   color: #9ca3af;
 }
+
+.create-word-button {
+  position: fixed;
+  right: 32px;
+  bottom: 32px;
+  width: 68px;
+  height: 68px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  z-index: 1000;
+}
+
+.create-word-button:hover {
+  transform: translateY(-4px) scale(1.05);
+}
+
+.create-word-button:active {
+  transform: scale(0.95);
+}
+
+.create-word-button img {
+  width: 80px;
+  height: 80px;
+
+  pointer-events: none;
+}

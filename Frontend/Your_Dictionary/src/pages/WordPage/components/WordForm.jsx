@@ -1,14 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import "./WordPage.css";
 
 
-export default function WordFormCreate() {
+export default function WordFormCreate({ onClose }) {
+    const [showComponent, setShowComponent] = useState(true);
+
     return (
         <div className="word-modal-overlay">
             <div className="created-word-container">
                 <div className="create-word-header">
                     <h2>Create Word</h2>
-                    <button className="close-button">✕</button>
+                    <button 
+                        onClick={onClose}
+                        className="close-button">
+                        ✕
+                    </button>
                 </div>
                 <div className="create-word-form-container">
                     <div className="word-string-container">

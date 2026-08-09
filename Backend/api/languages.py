@@ -13,9 +13,9 @@ def get_all_languages(skip: int = 0, limit = 100, db: Session = Depends(get_db))
     return (db.query(Language).offset(skip).limit(limit).all())
 
 
-@router.get("/by-name/{language_name}", response_model=LanguageResponseSchema)
-def get_language(language_name: str,  db: Session = Depends(get_db)):
-    language_db = (db.query(Language).filter(Language.language == language_name).first())
+@router.get("/by-code/{language_code}", response_model=LanguageResponseSchema)
+def get_language(language_code: str,  db: Session = Depends(get_db)):
+    language_db = (db.query(Language).filter(Language.code == language_code).first())
     if not language_db:
         raise HTTPException(status_code=404, detail="Language not found")
 

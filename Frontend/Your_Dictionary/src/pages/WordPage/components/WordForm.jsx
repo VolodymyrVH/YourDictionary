@@ -1,4 +1,4 @@
-import React, { use, useState } from "react";
+import React, { useState } from "react";
 import "./WordPage.css";
 import axios from "axios";
 
@@ -7,40 +7,65 @@ export default function WordFormCreate({ onClose }) {
     const [showComponent, setShowComponent] = useState(true);
 
     const [selectedLanguageCode, setSelectedLanguageCode] = useState("ger");
-    const [selectedArticle, setSelectedArticle] = useState(null);
+    const [selectedArticle, setSelectedArticle] = useState("");
+    const [selectedPart, setSelectedPart] = useState("Noun");
+    
+    const articleToGender = {
+        "der": "Masculine",
+        "die": "Feminine",
+        "das": "Neuter",
+        "die (Pl.)": "Plural",
+    };
 
     const [userWord, setUserWord] = useState({
         word_string: "",
-        language_id: 1,
+        language_id: 2,
         article_id: null,
-        part_of_speech_id: null,
+        part_of_speech_id: 1,
         transcription: "",
         gender_id: null,
         definition: ""
     })
 
     const [isSubmitted, setIsSubmitted] = useState(false);
+    const resetForm = () => {
+        setSelectedLanguageCode("ger");
+        setSelectedArticle("");
+        setSelectedPart("Noun");
+
+        setUserWord({
+            word_string: "",
+            language_id: 2,
+            article_id: null,
+            part_of_speech_id: 1,
+            transcription: "",
+            gender_id: null,
+            definition: ""
+        });
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        setIsSubmitted(true);
-
         try {
+            const token = localStorage.getItem("access_token");
+
             const response = await axios.post(
                 "http://127.0.0.1:8000/words/word",
+                userWord,
                 {
-                    word_string: userWord.word_string,
-                    language_id: userWord.language_id,
-                    article_id: userWord.article_id,
-                    part_of_speech_id: userWord.part_of_speech_id,
-                    transcription: userWord.transcription,
-                    gender_id: userWord.gender_id,
-                    definition: userWord.definition
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
                 }
             );
+
+            console.log("Word added:", response.data);
+
+            resetForm();
         } catch (error) {
-            console.error("Errod adding word");
+            console.error("Errod adding word", error);
+            console.error("Response", error.response?.data);
         }
     }
 
@@ -72,8 +97,12 @@ export default function WordFormCreate({ onClose }) {
 
                                     setUserWord((prev) => ({
                                         ...prev,
-                                        language_id: response.data.id
+                                        language_id: response.data.id,
+                                        article_id: null,
+                                        gender_id: null,
                                     }));
+                                    setSelectedArticle("");
+
                                 } catch (error) {
                                     console.error("Error getting language:", error);
                                 }
@@ -85,48 +114,128 @@ export default function WordFormCreate({ onClose }) {
                         </select>
                         <select 
                             className="article-selection"
+                            disabled={selectedLanguageCode !== "ger" || selectedPart !== "Noun"}
                             value={selectedArticle}
                             onChange={async (e) => {
                                 const article = e.target.value;
+                                
+                                if (article === "") {
+                                    setSelectedArticle("");
 
-                                if (e.target.value === null){
-                                    
-                                } else {
-                                    setSelectedArticle(article);
+                                    setUserWord((prev) => ({
+                                        ...prev,
+                                        article_id: null,
+                                        gender_id: null,
+                                    }));
 
-                                    try {
-                                        const response = await axios.get(
-
-                                        );
-                                    } catch {}
+                                    return;
                                 }
+                                    
+                                setSelectedArticle(article);
 
-   
+                                try {
+                                    const responseArticle = await axios.get(
+                                        `http://127.0.0.1:8000/articles/by-name/${article}`
+                                    );
+
+                                    const gender = articleToGender[article];
+
+                                    const responseGender = await axios.get(
+                                        `http://127.0.0.1:8000/genders/by-name/${gender}`
+                                    );
+
+                                    setUserWord((prev) => ({
+                                        ...prev,
+                                        article_id: responseArticle.data.id,
+                                        gender_id: responseGender.data.id
+                                    }))
+                                } catch (error) {
+                                    console.error("Error getting article/gender: ", error);
+                                }
                             }}
-                            >
-                            <option value={null}>-</option>
+                        >
+                            <option value="">-</option>
                             <option value="der">der</option>
                             <option value="die">die</option>
                             <option value="das">das</option>
                             <option value="die (Pl.)">die (Pl.)</option>
                         </select>
-                        <input className="string-input" placeholder="Word"/>
+                        <input 
+                        className="string-input" 
+                        placeholder="Word"
+                        value={userWord.word_string}
+                        onChange={(e) => {
+                            setUserWord((prev) => ({
+                                ...prev,
+                                word_string: e.target.value
+                            }));
+                        }} 
+                        />
                     </div>
                     <div className="second-layer-create-word">
-                        <select className="selection-part-of-speech">
-                            <option>Noun</option>
-                            <option>Pronoun</option>
-                            <option>Verb</option>
-                            <option>Adjective</option>
-                            <option>Adverb</option>
-                            <option>Preposition</option>
-                            <option>Conjunction</option>
-                            <option>Interjection</option>
+                        <select 
+                        className="selection-part-of-speech"
+                        value={selectedPart}
+                        onChange={async (e) => {
+                            const part = e.target.value;
+
+                            setSelectedPart(part)
+
+                            try {
+                                const response = await axios.get(
+                                    `http://127.0.0.1:8000/parts-of-speech/by-name/${part}`
+                                );
+
+                                setUserWord((prev) => ({
+                                    ...prev,
+                                    part_of_speech_id: response.data.id,
+                                }));
+
+                            } catch (error) {
+                                console.error("Error getting part of speach: ", error);
+                            }
+                        }}
+                        >
+                            <option value="Noun">Noun</option>
+                            <option value="Pronoun">Pronoun</option>
+                            <option value="Verb">Verb</option>
+                            <option value="Adjective">Adjective</option>
+                            <option value="Adverb">Adverb</option>
+                            <option value="Preposition">Preposition</option>
+                            <option value="Conjunction">Conjunction</option>
+                            <option value="Interjection">Interjection</option>
                         </select>
-                        <input className="transcription-input" placeholder="Transcription"/>
+                        <input 
+                        className="transcription-input" 
+                        placeholder="Transcription"
+                        value={userWord.transcription}
+                        onChange={(e) => {
+                            setUserWord((prev) => ({
+                                ...prev,
+                                transcription: e.target.value
+                            }));
+                        }}
+                        />
                     </div>
-                    <textarea className="definition-text-input" placeholder="Definition..." rows="5"/>
-                    <button className="submit-word-button">Add Word</button>
+                    <textarea 
+                    className="definition-text-input" 
+                    placeholder="Definition..." 
+                    rows="5"
+                    value={userWord.definition}
+                    onChange={(e) => {
+                        setUserWord((prev) => ({
+                            ...prev,
+                            definition: e.target.value
+                        }));
+                    }}
+                    />
+                    <button 
+                    type="button"
+                    className="submit-word-button"
+                    onClick={handleSubmit}
+                    >
+                        Add Word
+                    </button>
                 </div>
             </div>
         </div>

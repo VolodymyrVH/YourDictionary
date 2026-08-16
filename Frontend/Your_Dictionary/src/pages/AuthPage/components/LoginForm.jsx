@@ -29,10 +29,15 @@ export default function LoginForm() {
                     password: userlog.password
                 }
             );
+
+            localStorage.setItem(
+                "access_token",
+                response.data.access_token
+            );
             
             navigate("/wordpage");
         } catch (error) {
-            console.error("error login");
+            console.error("error login", error);
         }
     }
 

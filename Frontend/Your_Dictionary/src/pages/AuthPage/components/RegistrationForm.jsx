@@ -28,7 +28,7 @@ export default function RegitstrationForm() {
         }
 
         try {
-            const response = await axios.post(
+            const registerResponse = await axios.post(
                 "http://127.0.0.1:8000/users",
                 {
                     email: userreg.email,
@@ -36,9 +36,24 @@ export default function RegitstrationForm() {
                 }
             );
 
+            const loginResponse = await axios.post(
+                "http://127.0.0.1:8000/auth/token",
+                {
+                    email: userreg.email,
+                    password: userreg.password
+                }
+            );
+
+            localStorage.setItem(
+                "access_token",
+                loginResponse.data.access_token
+            );
+
             navigate("/wordpage");
         } catch (error) {
-            console.error("Error registration");
+            console.error("Status:", error.response?.status);
+            console.error("Data:", error.response?.data);
+            console.error("Error:", error);
         }
     }
 

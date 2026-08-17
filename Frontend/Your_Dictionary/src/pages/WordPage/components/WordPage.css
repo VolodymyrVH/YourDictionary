@@ -456,3 +456,24 @@ body {
 .category-container .word-container {
   background: #ffffffc2;
 }
+
+.message-word {
+  position: fixed;
+  z-index: 1001;
+  top: 15vh;
+  font-size: 2vh;
+  font-weight: bold;
+  margin-bottom: 15px;
+  padding: 10px 15px;
+  border-radius: 6px;
+}
+
+.message-word.success {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.message-word.error {
+  background-color: #f8d7da;
+  color: #721c24;
+}

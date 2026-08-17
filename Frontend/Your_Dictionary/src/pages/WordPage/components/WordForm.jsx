@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { use, useState } from "react";
 import "./WordPage.css";
 import axios from "axios";
 
 
 export default function WordFormCreate({ onClose }) {
     const [showComponent, setShowComponent] = useState(true);
+    const [messageComponent, setMessageComponent] = useState("");
+    const [messageType, setMessageType] = useState("");
 
     const [selectedLanguageCode, setSelectedLanguageCode] = useState("ger");
     const [selectedArticle, setSelectedArticle] = useState("");
@@ -62,8 +64,17 @@ export default function WordFormCreate({ onClose }) {
 
             console.log("Word added:", response.data);
 
+            setMessageComponent("The word added succesfuly!");
+            setMessageType("success");
             resetForm();
+
+            setTimeout(() => {
+                setMessageComponent("");
+                setMessageType("");
+            }, 10000);
         } catch (error) {
+            setMessageComponent("Some fields are empty or incorrect!");
+            setMessageType("error");
             console.error("Errod adding word", error);
             console.error("Response", error.response?.data);
         }
@@ -71,6 +82,13 @@ export default function WordFormCreate({ onClose }) {
 
     return (
         <div className="word-modal-overlay">
+            {messageComponent && (
+                <div className={`message-word ${messageType}`}>
+                    <p className="messege-word-text">
+                        {messageComponent}
+                    </p>
+                </div>
+            )}
             <div className="created-word-container">
                 <div className="create-word-header">
                     <h2>Create Word</h2>

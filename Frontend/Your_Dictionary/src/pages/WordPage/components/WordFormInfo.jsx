@@ -1,13 +1,38 @@
-import React from "react";
+import React, { useState } from "react";
 import "./WordPage.css";
+import axios from "axios";
 
-export default function WordFormInfo() {
+export default function WordFormInfo({ onClose, wordId }) {
+    const getWord = async () => {
+        try {
+            const token = localStorage.getItem("access_token");
+
+            const response = await axios.get(
+                `http://127.0.0.1:8000/words/id/${wordId}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+            //write here showing word
+
+        } catch (error) {
+            console.error("Error getting words", error);
+            console.error("Response", error.response?.data);
+        }
+    };
+
     return (
         <div className="word-modal-overlay">
             <div className="info-word-container">
                 <div className="create-word-header">
                     <h2>Word Information</h2>
-                    <button className="close-button">✕</button>
+                    <button 
+                        onClick={onClose}
+                        className="close-button">
+                            ✕
+                    </button>
                 </div>
                 <div className="info-word-form-container">
                     <div className="word-info-header">

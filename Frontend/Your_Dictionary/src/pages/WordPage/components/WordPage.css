@@ -394,14 +394,14 @@ body {
   align-items: flex-start;
   gap: 16px;
   padding: 24px 32px;
-  max-width: 1200px;
+  max-width: 100%;
   margin: 0 auto;
 }
 
 .word-container {
   border: none;
   border-radius: 14px;
-  background: #ffffff63;
+  background: #ffffffcc;
   padding: 10px 20px;
   min-width: 120px;
   max-width: none;

@@ -5,15 +5,29 @@ import CreateWordButton from "./components/CreateWordButton"
 import WordFormCreate from "./components/WordForm"
 import WordFormInfo from "./components/WordFormInfo"
 import WordsField from "./components/WordsField"
+import { useState } from "react"
 
 export default function WordPage() {
+    const [refreshTrigger, setRefreshTrigger] = useState(0);
+    const [selectedLanguage, setSelectedLanguage] = useState("eng");
+
+    const handleWordAdded = () => {
+        setRefreshTrigger(prev => prev + 1);
+    };
+
     return(
         <>
             <WordGameHeader />
-            <WordLanguageChanger />
+            <WordLanguageChanger 
+                selectedLanguage={selectedLanguage} 
+                onLanguageChange={setSelectedLanguage}
+            />
             <WordSearchBar />
-            <WordsField />
-            <CreateWordButton />
+            <WordsField
+                languageCode={selectedLanguage}
+                refreshTrigger={refreshTrigger}
+            />
+            <CreateWordButton onWordAdded={handleWordAdded} />
         </>
     )
 }

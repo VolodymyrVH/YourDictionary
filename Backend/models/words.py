@@ -17,7 +17,7 @@ class Word(Base):
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     language_id = Column(Integer, ForeignKey("languages.id"), nullable=False)
     article_id = Column(Integer, ForeignKey("articles.id"), nullable=True)
-    part_of_speech_id = Column(Integer, ForeignKey("parts_of_speech.id"), nullable=True)
+    part_of_speech_id = Column(Integer, ForeignKey("parts_of_speech.id"), nullable=False)
     gender_id = Column(Integer, ForeignKey("genders.id"), nullable=True)
 
     user = relationship("User", back_populates="words")

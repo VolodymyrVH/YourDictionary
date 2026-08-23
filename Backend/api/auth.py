@@ -14,7 +14,7 @@ from schemas.users import UserLoginSchema
 
 SECRET_KEY = "123"
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
+ACCESS_TOKEN_EXPIRE_MINUTES = 240
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 

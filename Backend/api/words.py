@@ -5,6 +5,7 @@ from schemas.categories import CategoryResponseSchema
 from schemas.translations import TranslationResponseSchema
 from models.words import Word
 from models.users import User
+from models.languages import Language
 from models.translations import Translation
 from models.categories import WordCategory, Category
 from core.database import get_db
@@ -17,6 +18,15 @@ router = APIRouter(prefix="/words", tags=["word"])
 @router.get("/", response_model=list[WordResponseSchema])
 def get_all_words(skip: int = 0, limit = 100, current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     return (db.query(Word).filter(Word.user_id == current_user.id).offset(skip).limit(limit).all())
+
+
+@router.get("/id/{word_id}", response_model=WordResponseSchema)
+def get_word(id: int, current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    word_db = (db.query(Word).filter(Word.id == id, Word.user_id == current_user.id).first())
+    if not word_db:
+        raise HTTPException(status_code=404, detail="Word not found")
+
+    return word_db
 
 
 @router.get("/by-name/{word}", response_model=WordResponseSchema)
@@ -49,15 +59,21 @@ def get_word_transaltion(word_id: int, current_user: User = Depends(get_current_
 @router.get("/filtered_words", response_model=list[WordResponseSchema])
 def get_filtered_words(skip: int = 0, 
                        limit = 100,
-                       language_id: int | None = None,
+                       language_code: str | None = None,
                        part_of_speech_id: int | None = None,
                        gender_id: int | None = None, 
                        current_user: User = Depends(get_current_user), 
                        db: Session = Depends(get_db)):
     query = db.query(Word).filter(Word.user_id == current_user.id)
 
-    if language_id:
-        query = query.filter(Word.language_id == language_id)
+    if language_code:
+        language = db.query(Language).filter(Language.code == language_code).first()
+
+        if language:
+            query = query.filter(Word.language_id == language.id)
+        else:
+            return []
+        
     if part_of_speech_id:
         query = query.filter(Word.part_of_speech_id == part_of_speech_id)
     if gender_id:

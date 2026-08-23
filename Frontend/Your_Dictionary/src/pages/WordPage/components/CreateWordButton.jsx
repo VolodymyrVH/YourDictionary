@@ -4,7 +4,7 @@ import "./WordPage.css";
 
 import WordFormCreate from "./WordForm";
 
-export default function CreateWordButton() {
+export default function CreateWordButton({ onWordAdded }) {
     const [showComponent, setShowComponent] = useState(false);
 
     return (
@@ -14,7 +14,12 @@ export default function CreateWordButton() {
                 className="create-word-button">
                 <img src={AddCircle} alt="Create word" />
             </button>
-            {showComponent && (<WordFormCreate onClose={() => setShowComponent(false)}/>)}
+            {showComponent && (
+                <WordFormCreate 
+                onClose={() => setShowComponent(false)}
+                onWordAdded={onWordAdded}
+                />)
+            }
         </>
     );
 }

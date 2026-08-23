@@ -1,10 +1,9 @@
-import React, { use, useState } from "react";
+import React, { useState } from "react";
 import "./WordPage.css";
 import axios from "axios";
 
-
-export default function WordFormCreate({ onClose }) {
-    const [showComponent, setShowComponent] = useState(true);
+export default function WordFormCreate({ onClose, onWordAdded }) {
+    //const [showComponent, setShowComponent] = useState(true);
     const [messageComponent, setMessageComponent] = useState("");
     const [messageType, setMessageType] = useState("");
 
@@ -27,9 +26,9 @@ export default function WordFormCreate({ onClose }) {
         transcription: "",
         gender_id: null,
         definition: ""
-    })
+    });
 
-    const [isSubmitted, setIsSubmitted] = useState(false);
+    //const [isSubmitted, setIsSubmitted] = useState(false);
     const resetForm = () => {
         setSelectedLanguageCode("ger");
         setSelectedArticle("");
@@ -67,11 +66,13 @@ export default function WordFormCreate({ onClose }) {
             setMessageComponent("The word added succesfuly!");
             setMessageType("success");
             resetForm();
+            onWordAdded();
 
             setTimeout(() => {
                 setMessageComponent("");
                 setMessageType("");
             }, 10000);
+
         } catch (error) {
             setMessageComponent("Some fields are empty or incorrect!");
             setMessageType("error");

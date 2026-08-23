@@ -2,20 +2,22 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "./WordPage.css";
 
-export default function WordLanguageChanger() {
-    const [activeLanguage, setActiveLanguage] = useState("English");
-
-    const languages = ["English", "German", "Ukrainian"];
+export default function WordLanguageChanger({ selectedLanguage, onLanguageChange }) {
+    const languages = [
+        {name: "English", code:"eng"}, 
+        {name: "German", code: "ger"},
+        {name: "Ukrainian", code: "ukr"}
+    ];
 
     return (
         <div className="word-language-container">
             <div className="lang-container">
                 {languages.map((language) => (
                     <button
-                        key={language}
-                        className={`lang-button ${activeLanguage === language ? "active" : ""}`}
-                        onClick={() => setActiveLanguage(language)}>
-                        {language}
+                        key={language.code}
+                        className={`lang-button ${selectedLanguage === language.code ? "active" : ""}`}
+                        onClick={() => onLanguageChange(language.code)}>
+                        {language.name}
                     </button>
                 ))}
             </div>

@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.orm import Session
-from schemas.words import WordCreateSchema, WordResponseSchema, WordUpdateSchema
+from schemas.words import WordCreateSchema, WordResponseSchema, WordUpdateSchema, WordNameResponseSchema
 from schemas.categories import CategoryResponseSchema
 from schemas.translations import TranslationResponseSchema
 from models.words import Word
@@ -20,13 +20,26 @@ def get_all_words(skip: int = 0, limit = 100, current_user: User = Depends(get_c
     return (db.query(Word).filter(Word.user_id == current_user.id).offset(skip).limit(limit).all())
 
 
-@router.get("/id/{word_id}", response_model=WordResponseSchema)
-def get_word(id: int, current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
-    word_db = (db.query(Word).filter(Word.id == id, Word.user_id == current_user.id).first())
+@router.get("/id/{word_id}", response_model=WordNameResponseSchema)
+def get_word_id(word_id: int, current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    word_db = (db.query(Word).filter(Word.id == word_id, Word.user_id == current_user.id).first())
+
     if not word_db:
         raise HTTPException(status_code=404, detail="Word not found")
 
-    return word_db
+    return {
+        "id": word_db.id,
+        "user_id": word_db.user_id,
+        "word_string": word_db.word_string,
+
+        "language": word_db.language.language,
+        "article": word_db.article.article if word_db.article else None,
+        "gender": word_db.gender.gender if word_db.gender else None,
+        "part_of_speech": word_db.part_of_speech.part,
+
+        "transcription": word_db.transcription,
+        "definition": word_db.definition,
+    }
 
 
 @router.get("/by-name/{word}", response_model=WordResponseSchema)

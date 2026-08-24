@@ -3,7 +3,6 @@ import "./WordPage.css";
 import axios from "axios";
 
 export default function WordFormCreate({ onClose, onWordAdded }) {
-    //const [showComponent, setShowComponent] = useState(true);
     const [messageComponent, setMessageComponent] = useState("");
     const [messageType, setMessageType] = useState("");
 
@@ -28,7 +27,6 @@ export default function WordFormCreate({ onClose, onWordAdded }) {
         definition: ""
     });
 
-    //const [isSubmitted, setIsSubmitted] = useState(false);
     const resetForm = () => {
         setSelectedLanguageCode("ger");
         setSelectedArticle("");

@@ -36,4 +36,18 @@ class WordResponseSchema(BaseModel):
     updated_at: datetime | None
 
     model_config = ConfigDict(from_attributes=True)
-    
+
+
+class WordNameResponseSchema(BaseModel):
+    id: int
+    user_id: int
+    word_string: str
+    language: str
+    article: str | None
+    part_of_speech: str
+    transcription: str
+    gender: str | None
+    definition: str
+        
+    model_config = ConfigDict(from_attributes=True)
+        

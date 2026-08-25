@@ -15,6 +15,10 @@ export default function WordPage() {
         setRefreshTrigger(prev => prev + 1);
     };
 
+    const handleWordDeleted = () => {
+        setRefreshTrigger(prev => prev + 1);
+    };
+
     return(
         <>
             <WordGameHeader />
@@ -26,6 +30,7 @@ export default function WordPage() {
             <WordsField
                 languageCode={selectedLanguage}
                 refreshTrigger={refreshTrigger}
+                onWordDeleted={handleWordDeleted}
             />
             <CreateWordButton onWordAdded={handleWordAdded} />
         </>

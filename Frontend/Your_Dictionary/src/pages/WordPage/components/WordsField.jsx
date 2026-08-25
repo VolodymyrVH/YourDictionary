@@ -3,7 +3,7 @@ import "./WordPage.css";
 import axios from "axios";
 import WordFormInfo from "./WordFormInfo";
 
-export default function WordsField({ refreshTrigger, languageCode }) {
+export default function WordsField({ refreshTrigger, languageCode, onWordDeleted }) {
     const [userWords, setUserWords] = useState([]);
 
     const [showWordComponent, setShowWordComponent] = useState(false);
@@ -57,6 +57,7 @@ export default function WordsField({ refreshTrigger, languageCode }) {
                     <WordFormInfo
                         wordId={selectedWordId}
                         onClose={() => setShowWordComponent(false)}
+                        onWordDelete={onWordDeleted}
                     />
                 )}
 

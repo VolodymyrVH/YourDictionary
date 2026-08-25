@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./WordPage.css";
 import axios from "axios";
 
-export default function WordFormInfo({ onClose, wordId }) {
+export default function WordFormInfo({ onClose, onWordDelete, wordId }) {
     const [userWord, setUserWord] = useState({
         word_string: "",
         language: null,
@@ -41,6 +41,29 @@ export default function WordFormInfo({ onClose, wordId }) {
         }
     }, [wordId]);
 
+
+    const deleteWord = async () => {
+        try {
+            const token = localStorage.getItem("access_token");
+
+            const response = await axios.delete(
+                `http://127.0.0.1:8000/words/${wordId}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+
+            onWordDelete();
+            onClose();
+
+        } catch (error) {
+            console.error("Error getting words", error);
+            console.error("Response", error.response?.data);
+        }
+    }
+
     return (
         <div className="word-modal-overlay">
             <div className="info-word-container">
@@ -54,7 +77,7 @@ export default function WordFormInfo({ onClose, wordId }) {
                 </div>
                 <div className="info-word-form-container">
                     <div className="word-info-header">
-                        <h1>{userWord.article_id} {userWord.word_string}</h1>
+                        <h1>{userWord.article ? `${userWord.article}` : ""} {userWord.word_string}</h1>
                         <div className="word-tags">
                             <span className="tag blue">{userWord.language}</span>
                             <span className="tag">{userWord.gender}</span>
@@ -83,6 +106,15 @@ export default function WordFormInfo({ onClose, wordId }) {
                             <span className="chip">Computer</span>
                             <button className="add-chip-button">+</button>
                         </div>
+                    </div>
+                    <div className="change-delete-container">
+                        <button
+                            className="delete-button-word"
+                            type="button"
+                            onClick={deleteWord}
+                            >
+                            Delete
+                        </button>
                     </div>
                 </div>
             </div>
